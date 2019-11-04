@@ -25,26 +25,22 @@ class App extends React.Component {
         temp_max: forecast.main.temp_max,
         temp_min: forecast.main.temp_min
       })
-    })});
-
-    // this.setState({weather: test.list.map((forecast, index) => {
-    //   // let date = new Date(forecast.dt*1000);
-    //   // let days = ["So.","Mo.","Di.","Mi.","Do.","Fr.","Sa."]
-    //   // let day = days[date.getDay()];
-    //   let icon = "http://openweathermap.org/img/wn/" + forecast.weather[0].icon + "@2x.png";
-    //   return(
-    //     <div style={{padding:10}}>
-    //       <p style={{textAlign:"center"}}>{forecast.dt_txt}</p>
-    //       <img src={icon} key={icon + index} style={{marginLeft:"20%"}}></img>
-    //       <p style={{textAlign:"center"}}>Max: {forecast.main.temp_max} Min: {forecast.main.temp_min}</p>
-    //     </div>);
-    //     //<li key={index}>{forecast.dt}</li>)
-    // })});
+    }).reduce((prev, curr) => {
+        prev[curr.day] = [...prev[curr.day] || [], curr];
+        return prev;
+    }, {})
+  });
   }
   render() {
-    let weather = this.state.weather.map(item => <Forecast txt={item.txt} icon={item.icon} temp_max={item.temp_max} temp_min={item.temp_min}></Forecast>)
+    let weather = this.state.weather.forEach(day => day.reduce(((prev, curr) => {
+
+    },{})
+  ));
+    //let weather = this.state.weather.map(item => <Forecast txt={item.txt} icon={item.icon} temp_max={item.temp_max} temp_min={item.temp_min}></Forecast>)
+    console.log(this.state.weather);
     return (
-      <div style={{display:"flex",flexWrap:"wrap"}}>{weather}</div>
+      <div>hi</div>
+      //<div style={{display:"flex",flexWrap:"wrap"}}>{weather}</div>
     );
   }
 }
