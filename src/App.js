@@ -24,20 +24,25 @@ class App extends React.Component {
         icon: icon,
         temp_max: forecast.main.temp_max,
         temp_min: forecast.main.temp_min
-      })
-    }).reduce((prev, curr) => {
+      })})
+      .reduce((prev, curr) => {
         prev[curr.day] = [...prev[curr.day] || [], curr];
         return prev;
-    }, {})
-  });
+      },[])
+    });
   }
   render() {
-    let weather = this.state.weather.forEach(day => day.reduce(((prev, curr) => {
 
-    },{})
-  ));
     //let weather = this.state.weather.map(item => <Forecast txt={item.txt} icon={item.icon} temp_max={item.temp_max} temp_min={item.temp_min}></Forecast>)
     console.log(this.state.weather);
+    // console.log(this.state.weather[0]);
+    // if(this.state.weather.length > 0) {
+    //   let weather = this.state.weather.forEach(day => day.reduce(((prev, curr) => {
+    //     return prev + curr;
+    //   },{})));
+    //   console.log(weather);
+    //   console.log(this.state.weather);
+    // }
     return (
       <div>hi</div>
       //<div style={{display:"flex",flexWrap:"wrap"}}>{weather}</div>
