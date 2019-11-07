@@ -16,7 +16,8 @@ class App extends React.Component {
       let date = new Date(forecast.dt*1000);
       let days = ["So.","Mo.","Di.","Mi.","Do.","Fr.","Sa."];
       let day = days[date.getDay()];
-      let icon = "http://openweathermap.org/img/wn/" + forecast.weather[0].icon + "@2x.png";
+      //let icon = "http://openweathermap.org/img/wn/" + forecast.weather[0].icon + "@2x.png";
+      let icon = forecast.weather[0].icon;
       return ({
         utc: forecast.dt,
         txt: forecast.dt_txt,
@@ -26,26 +27,32 @@ class App extends React.Component {
         temp_min: forecast.main.temp_min
       })})
       .reduce((prev, curr) => {
-        prev[curr.day] = [...prev[curr.day] || [], curr];
-        return prev;
+      prev[curr.day] = [...prev[curr.day] || [], curr];
+      return prev;
       },[])
+    }, () => {
+      let arr = [];
+      for (let key in this.state.weather) {
+        arr = [...arr, this.state.weather[key].reduce((prev,curr) => {
+          prev.temp_max += curr.temp_max;
+          prev.temp_min += curr.temp_min;
+          prev.icon.push(curr.icon);
+          return prev;
+        },{
+          day: key,
+          icon: [],
+          temp_max: 0,
+          temp_min: 0
+        })];
+      }
+      this.setState({weather: arr}, () => console.log(this.state.weather));
     });
   }
   render() {
 
-    //let weather = this.state.weather.map(item => <Forecast txt={item.txt} icon={item.icon} temp_max={item.temp_max} temp_min={item.temp_min}></Forecast>)
-    console.log(this.state.weather);
-    // console.log(this.state.weather[0]);
-    // if(this.state.weather.length > 0) {
-    //   let weather = this.state.weather.forEach(day => day.reduce(((prev, curr) => {
-    //     return prev + curr;
-    //   },{})));
-    //   console.log(weather);
-    //   console.log(this.state.weather);
-    // }
+    let weather = this.state.weather.map(item => <Forecast txt={item.txt} icon={item.icon} temp_max={item.temp_max} temp_min={item.temp_min}></Forecast>)
     return (
-      <div>hi</div>
-      //<div style={{display:"flex",flexWrap:"wrap"}}>{weather}</div>
+      <div style={{display:"flex",flexWrap:"wrap"}}>{weather}</div>
     );
   }
 }
